@@ -1,18 +1,25 @@
+// Smart Energy Consumption Tracker
+// This program helps users track appliance-wise energy consumption,
+// estimate electricity bills, and suggests energy-saving tips.
+// Developed as part of BYOP project.
 import java.util.*;
 import java.io.*;
-// Appliance class
+// Appliance class 
 class Appliance {
     String name;
     double power; // in watts
     double hours; // per day
+    // initializes appliances
     Appliance(String name, double power, double hours) {
         this.name = name;
         this.power = power;
         this.hours = hours;
     }
+    // calculates energy consumption in units
     double calculateUnits(int days) {
         return (power * hours * days) / 1000.0;
     }
+    //converts to string to store in the file
     @Override
     public String toString() {
         return name + "," + power + "," + hours;
@@ -22,7 +29,7 @@ class Appliance {
 public class EnergyTracker {
     static ArrayList<Appliance> appliances = new ArrayList<>();
     static Scanner sc = new Scanner(System.in);
-    // Add appliances
+    // takes user input and adds appliances
     static void addAppliance() {
         System.out.print("Enter appliance name ");
         String name = sc.nextLine();
@@ -34,7 +41,7 @@ public class EnergyTracker {
         appliances.add(new Appliance(name, power, hours));
         System.out.println("Appliance added");
     }
-    // View consumption
+    // shows consumption for given number of days
     static void viewConsumption() {
         if (appliances.isEmpty()) {
             System.out.println("No data available\n");
@@ -51,7 +58,7 @@ public class EnergyTracker {
         }
         System.out.println("Total units- " + totalUnits + "\n");
     }
-    // Calculate bill
+    // Calculate bill based on given data
     static void calculateBill() {
         if (appliances.isEmpty()) {
             System.out.println("No data available\n");
@@ -69,7 +76,7 @@ public class EnergyTracker {
         System.out.println("\nTotal Units- " + totalUnits);
         System.out.println("Estimated Bill- " + bill + "\n");
     }
-    // Highest consuming appliance
+    // Highest consuming appliance for given number of days
     static void highestConsumer() {
         if (appliances.isEmpty()) {
             System.out.println("No data available\n");
@@ -89,7 +96,7 @@ public class EnergyTracker {
         System.out.println("\nHighest Consumption is done by " + maxAppliance.name +
                 " (" + maxUnits + " units). Consider reducing its usage.\n");
     }
-    // Save data
+    // Save data provided by user
     static void saveData() {
         try {
             FileWriter fw = new FileWriter("data.txt");
@@ -102,7 +109,7 @@ public class EnergyTracker {
             System.out.println("Error saving data");
         }
     }
-    // Load data
+    //loads data stored in the file
     static void loadData() {
         try {
             File file = new File("data.txt");
@@ -127,7 +134,7 @@ public class EnergyTracker {
             System.out.println("Error loading data");
         }
     }
-    // Suggest savings
+    //suggests savings based on consumption appliance-wise
     static void suggestSavings() {
         if (appliances.isEmpty()) {
             System.out.println("No data available\n");
@@ -157,7 +164,7 @@ public class EnergyTracker {
         }
         System.out.println();
     }
-    // Main method
+    // Main method to interact with user
     public static void main(String[] args) {
         while (true) {
             System.out.println("Energy Consumption Tracker");
