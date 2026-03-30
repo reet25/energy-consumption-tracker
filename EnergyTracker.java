@@ -3,15 +3,15 @@ import java.io.*;
 // Appliance class
 class Appliance {
     String name;
-    double power;//in watts
-    double hours;//per day
+    double power; // in watts
+    double hours; // per day
     Appliance(String name, double power, double hours) {
         this.name = name;
         this.power = power;
         this.hours = hours;
     }
     double calculateUnits(int days) {
-        return (power * hours * days) / 1000.0; 
+        return (power * hours * days) / 1000.0;
     }
     @Override
     public String toString() {
@@ -30,7 +30,7 @@ public class EnergyTracker {
         double power = sc.nextDouble();
         System.out.print("Enter hours used per day ");
         double hours = sc.nextDouble();
-        sc.nextLine(); 
+        sc.nextLine();
         appliances.add(new Appliance(name, power, hours));
         System.out.println("Appliance added");
     }
@@ -69,7 +69,7 @@ public class EnergyTracker {
         System.out.println("\nTotal Units- " + totalUnits);
         System.out.println("Estimated Bill- " + bill + "\n");
     }
-    // check highest consuming appliance
+    // Highest consuming appliance
     static void highestConsumer() {
         if (appliances.isEmpty()) {
             System.out.println("No data available\n");
@@ -87,9 +87,9 @@ public class EnergyTracker {
             }
         }
         System.out.println("\nHighest Consumption is done by " + maxAppliance.name +
-        " (" + maxUnits + " units). Consider reducing its usage.\n");   
+                " (" + maxUnits + " units). Consider reducing its usage.\n");
     }
-    // saving data
+    // Save data
     static void saveData() {
         try {
             FileWriter fw = new FileWriter("data.txt");
@@ -102,7 +102,7 @@ public class EnergyTracker {
             System.out.println("Error saving data");
         }
     }
-    // loading data
+    // Load data
     static void loadData() {
         try {
             File file = new File("data.txt");
@@ -122,11 +122,12 @@ public class EnergyTracker {
             }
             fileScanner.close();
             System.out.println("Data loaded\n");
+
         } catch (Exception e) {
             System.out.println("Error loading data");
         }
     }
-    // suggest savings
+    // Suggest savings
     static void suggestSavings() {
         if (appliances.isEmpty()) {
             System.out.println("No data available\n");
@@ -134,15 +135,29 @@ public class EnergyTracker {
         }
         System.out.print("Enter number of days - ");
         int days = sc.nextInt();
+        double totalUnits = 0;
+        for (Appliance a : appliances) {
+            totalUnits += a.calculateUnits(days);
+        }
+        System.out.println("\nEnergy Saving Suggestions -\n");
         for (Appliance a : appliances) {
             double units = a.calculateUnits(days);
-            if (units > 50) {
-                System.out.println(a.name + " is consuming high energy. Try reducing usage.");
+            double percentage = (units / totalUnits) * 100;
+            if (percentage > 30) {
+                System.out.println(a.name + " consumes " + String.format("%.2f", percentage)
+                        + "% of total energy - Consider reducing usage significantly.");
+            } else if (percentage > 15) {
+                System.out.println(a.name + " consumes moderate energy ("
+                        + String.format("%.2f", percentage)
+                        + "%). Try optimizing usage.");
             }
+        }
+        if (totalUnits < 50) {
+            System.out.println("\nOverall consumption is low. Good management!");
         }
         System.out.println();
     }
-    // Main class
+    // Main method
     public static void main(String[] args) {
         while (true) {
             System.out.println("Energy Consumption Tracker");
@@ -151,12 +166,12 @@ public class EnergyTracker {
             System.out.println("3.Calculate bill");
             System.out.println("4.Highest consuming appliance");
             System.out.println("5.Save data");
-            System.out.println("6.load data");
+            System.out.println("6.Load data");
             System.out.println("7.Suggest energy savings");
             System.out.println("8.Exit");
             System.out.print("Enter choice ");
             int choice = sc.nextInt();
-            sc.nextLine(); 
+            sc.nextLine();
             switch (choice) {
                 case 1:
                     addAppliance();
